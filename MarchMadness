@@ -41,7 +41,7 @@ public class Division
        String choice = sc.next();
        System.out.println("The choice selected is:" + choice);
        if (choice.equals("1")) {
-           System.out.println("Printing the divisions...");
+           System.out.println("Printing the divisions..." + midwest.name + ", " + south.name + ", " + west.name + ", and " + east.name);
         }
         
        else if(choice.equals("2")) {
