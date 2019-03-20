@@ -1,0 +1,62 @@
+import java.util.Scanner;
+/**
+ * Division that a March Madness game takes place in.
+ *
+ * Nicholas Ventura
+ * 3/20/19
+ */
+
+public class Division
+{
+   String name;
+   public static void main(String args[]){
+   Division east = new Division();
+   east.name = "East Division"; 
+   Division west = new Division();
+   west.name = "West Division";
+   Division south = new Division();
+   south.name = "South Division";
+   Division midwest = new Division();
+   midwest.name = "Midwest Division";
+   Division allDivision[] = new Division[4];
+   
+   allDivision[0] = east;
+   allDivision[1] = west;
+   allDivision[2] = south;
+   allDivision[3] = midwest;
+   int i = 0;
+   while (i < 4) {
+       System.out.println("i is:" +i);
+       System.out.println("allDivisions[i].name");
+       i = i+1;
+       
+    }
+   boolean continueLoop = true;
+   Scanner sc = new Scanner(System.in);
+   while (continueLoop==true) {
+       System.out.println("Here are the choices:");
+       System.out.println("1. Print Divisions");
+       System.out.println("2. Future");
+       System.out.println("3. Future");
+       String choice = sc.next();
+       System.out.println("The choice selected is:" + choice);
+       if (choice.equals("1")) {
+           System.out.println("Printing the divisions...");
+        }
+        
+       else if(choice.equals("2")) {
+           System.out.println("Choice 2"); 
+            }
+       else if(choice.equals("3")) {
+           System.out.println("Choice 3");
+        }
+        else {
+            System.out.println("That choice is not supported");
+        }
+    }
+}
+
+    
+    
+   
+}
