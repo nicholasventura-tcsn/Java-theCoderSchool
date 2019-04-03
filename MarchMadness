@@ -1,3 +1,4 @@
+
 import java.util.Scanner;
 /**
  * Division that a March Madness game takes place in.
@@ -19,7 +20,8 @@ public class Division
    Division midwest = new Division();
    midwest.name = "Midwest Division";
    Division allDivision[] = new Division[4];
-   
+   int nextTeamSlot = 0;
+   Team allTeam[] = new Team[64];
    allDivision[0] = east;
    allDivision[1] = west;
    allDivision[2] = south;
@@ -36,27 +38,56 @@ public class Division
    while (continueLoop==true) {
        System.out.println("Here are the choices:");
        System.out.println("1. Print Divisions");
-       System.out.println("2. Future");
-       System.out.println("3. Future");
-       String choice = sc.next();
+       System.out.println("2. Add a team");
+       System.out.println("3. Print all teams");
+       String choice = sc.nextLine();
        System.out.println("The choice selected is:" + choice);
        if (choice.equals("1")) {
            System.out.println("Printing the divisions..." + midwest.name + ", " + south.name + ", " + west.name + ", and " + east.name);
         }
         
        else if(choice.equals("2")) {
-           System.out.println("Choice 2"); 
+           System.out.println("Add a team");
+           System.out.println("What college?");
+           String college = sc.nextLine();
+           System.out.println("Entered college: " +college);
+           
+           System.out.println("What seed?");
+           int seed = Integer.parseInt(sc.nextLine());
+           
+           System.out.println("Here are the available divisions:");
+           for (int j = 0; j<4; j++) {
+               int choiceNum = j+1;
+               System.out.println(choiceNum + "- " + allDivision[j].name);
             }
-       else if(choice.equals("3")) {
-           System.out.println("Choice 3");
+           System.out.println("Which division?");
+           int choiceNum = Integer.parseInt(sc.nextLine());
+           Division chosenDivision = findDivisionByName(allDivision[choiceNum-1].name, allDivision);
+            
+           allTeam[nextTeamSlot] = new Team(college, seed, chosenDivision);
+           nextTeamSlot++;
+        }
+        else if(choice.equals("3")) {
+           System.out.println("Print all teams");
+        for (int k = 0; k < nextTeamSlot; k++) {
+            System.out.println(k);
+        }
         }
         else {
             System.out.println("That choice is not supported");
         }
     }
 }
-
-    
+   static Division findDivisionByName(String divisionName, Division[] allDivision) {
+       int arrayLength = allDivision.length;
+       for (int h = 0; h < arrayLength; h++) {
+           if (divisionName.equals(allDivision[h].name)) {
+               return allDivision[h];
+            }
+        }
+    return null;
+    }
+   
     
    
 }
