@@ -1,0 +1,18 @@
+/**
+ *This is info on the team.
+ *
+ * Nicholas Ventura
+ * 4/3/19
+ */
+public class Team
+{
+    String college;
+    int seed;
+    Division division;
+    
+    public Team(String collegeName, int startingSeed, Division div) {
+        college = collegeName;
+        seed = startingSeed;
+        division = div;
+    }
+}
