@@ -1,0 +1,21 @@
+/**
+ * This is the score of the game.
+ *
+ * Nicholas Ventura
+ * 4/3/19
+ */
+public class Game
+{
+   Team team1;
+   Team team2;
+   int team1Score;
+   int team2Score;
+   int round;
+   
+   public Game(Team challenger, Team defender, int round) {
+       team1 = challenger;
+       team2 = defender;
+       round = round;
+    }
+   
+}
