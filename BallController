@@ -1,0 +1,10 @@
+/**
+ * This controls the ball.
+ *
+ * Nicholas Ventura
+ * 4/24/19 
+ */
+public class BallController
+{
+    
+}
