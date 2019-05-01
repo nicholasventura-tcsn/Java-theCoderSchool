@@ -23,9 +23,53 @@ public class Ball
      circle.setCenterX(ballX);
      circle.setCenterY(ballY);
      circle.setRadius(ballRadius);
-     circle.setFill(Color.BLUE);
+     circle.setFill(Color.RED);
      circle.setFocusTraversable(true);
      windowWidth = width;
      windowHeight = height;
+     
+    }
+   void render() {
+       circle.setCenterX(ballX);
+       circle.setCenterY(ballY);
+       
+    }
+   void moveForward() {
+       ballX = ballX + xSpeed*xDirection;
+       ballY = ballY + ySpeed*yDirection;
+       
+    }
+   boolean isTouchingBottom() {
+       if (ballY+ballRadius >= windowHeight) return true;
+       return false;
+    }
+   boolean isTouchingRight() {
+       if (ballX+ballRadius >= windowWidth) return true;
+       return false;
+    }
+   boolean isTouchingTop() {
+       if (ballY-ballRadius <= 0) return true;
+       return false;
+    }
+   boolean isTouchingLeft() {
+       if (ballX-ballRadius <= 0) return true;
+       return false;
+    }
+    void bounceLeft() {
+       xDirection*=-1;
+    }
+   void bounceUp() {
+       yDirection*=-1;
+    }   
+   void bounceDown() {
+       yDirection*=-1;
+    }
+   void bounceRight() {
+       xDirection*=-1;
+    }
+   void reverseDirection() {
+       yDirection*=-1;
+       xDirection*=-1;
     }
 }
+
