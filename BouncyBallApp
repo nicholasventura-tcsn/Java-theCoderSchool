@@ -23,8 +23,8 @@ public class BouncyBallApp extends Application
       stage.setScene(scene);
       stage.show();
       ball = new Ball(WIDTH, HEIGHT);
-      //BallController controller = new BallController(ball);
+      BallController controller = new BallController(ball);
       root.getChildren().add(ball.circle);
-      //controller.start();
+      controller.start();
     }
 }
