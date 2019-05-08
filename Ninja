@@ -1,0 +1,14 @@
+import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
+
+public class Ninja extends SpriteBase {
+
+    public Ninja(Pane layer, Image image, double x, double y, double r, double dx, double dy, double dr) {
+        super(layer, image, x, y, r, dx, dy, dr, 0, 0);
+    }
+
+    @Override
+    public void checkRemovability() {
+        //Our Ninja will never be removed so no implementation is necessary
+    }
+}
