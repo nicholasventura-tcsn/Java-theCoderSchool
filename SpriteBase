@@ -1,0 +1,92 @@
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+
+public abstract class SpriteBase {
+
+    Image image;
+    ImageView imageView;
+
+    Pane layer;
+
+    double x;
+    double y;
+    double r;
+
+    double dx;
+    double dy;
+    double dr;
+    double distance;
+
+    boolean removable = false;
+
+    double h;
+    double w;
+    double dw;
+
+    public SpriteBase(Pane layer, Image image, double x, double y, double r, double dx, double dy, double dr, double distance, double dw) {
+
+        this.layer = layer;
+        this.image = image;
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.dx = dx;
+        this.dy = dy;
+        this.dr = dr;
+        this.distance = distance;
+
+
+        this.imageView = new ImageView(image);
+        this.imageView.relocate(x, y);
+        this.imageView.setRotate(r);
+
+        this.w = image.getWidth(); // imageView.getBoundsInParent().getHeight();
+        this.dw = dw;
+        this.h = image.getHeight(); // imageView.getBoundsInParent().getHeight();
+
+        addToLayer();
+
+    }
+
+    public void addToLayer() {
+        this.layer.getChildren().add(this.imageView);
+    }
+
+    public void removeFromLayer() {
+        this.layer.getChildren().remove(this.imageView);
+    }
+
+    public boolean isRemovable() {
+        return removable;
+    }
+
+    public void setRemovable(boolean removable) {
+        this.removable = removable;
+    }
+
+    //DONE 11 - Implement the public void move() method; 4 lines
+    public void move() {
+        x = x+dx;
+        y = y+dy;
+        r = r+dr;
+        w = w+dw;
+    }
+    //end
+
+    public void updateUI() {
+
+        imageView.relocate(x, y);
+        imageView.setRotate(r);
+        imageView.setPreserveRatio(true);
+        if (w != 0) imageView.setFitWidth(w);
+
+    }
+
+    public boolean isTouchingMouse (int mouseX, int mouseY) {
+    	return (mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h);
+    }
+
+    public abstract void checkRemovability();
+
+}
