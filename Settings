@@ -1,0 +1,51 @@
+public class Settings {
+
+    //TODO 12 - Tweak all the variables to work on your computer & to make any changes you want
+    //Try setting NUM_FRUIT to a number higher than 1!
+
+    public static double GRAVITY = 0.28; //was 0.28
+    public static int NUM_FRUIT = 1;//was 1
+
+    public static final double EXPLODE_SECONDS = 1.1; //was 1.1
+	public static final int LIVES = 3; //was 3
+	
+	public static double SCENE_WIDTH = 480; //was 480
+    public static double SCENE_HEIGHT = 360; //was 360
+
+    public static double MIN_Y_SPEED = -10; //was -10
+    public static double MAX_Y_SPEED = -5.0; //was -5.0
+
+    public static double MIN_X_SPEED = -5.0; //was -5.0
+    public static double MAX_X_SPEED = 5.0; //was 5.0
+    
+    public static double MIN_ROTATE = -10.0; //was -10.0
+    public static double MAX_ROTATE = 10.0; //was 10.0
+
+    public static int NINJA_Y = 165; //was 165
+    public static double MIN_FRUIT_Y = 200; //was 200
+    public static double MAX_FRUIT_Y = 360; //was 360
+    public static double START_FRUIT_WIDTH = 20; //was 20
+
+    public static String[] FRUIT_IMAGE_FILES = {
+            "images/bomb.png",
+            "images/apple.png",
+            "images/canteloupe.png",
+            "images/cherry.png",
+            "images/dragonfruit.png",
+            "images/kiwi.png",
+            "images/orange.png",
+            "images/starfruit.png"
+    };
+
+    public static String SMALL_EXPLOSION_IMAGE_FILE = "images/explosion.png";
+    public static String LARGE_EXPLOSION_IMAGE_FILE = "images/explosion-2.png";
+    public static String NINJA_IMAGE_FILE = "images/ninja.png";
+    public static String DOJO_IMAGE_FILE = "images/Chungus.jpg"; //was images/dojo480x360.jpg
+    public static double SIZE_DIV = 300; //was 300
+    public static double NINJA_TO_FRUIT_OFFSET = -35; //was -35
+
+    public static double EXPLODE_X = 20; //was 20
+    public static double EXPLODE_Y = 15; //was 15
+    public static double EXPLODE_DR = 20; //was 20
+    public static double EXPLODE_W = 500; //was 500
+}
