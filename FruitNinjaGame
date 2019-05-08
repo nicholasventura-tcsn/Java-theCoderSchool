@@ -1,0 +1,268 @@
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
+import javafx.animation.AnimationTimer;
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
+import javafx.stage.Stage;
+
+/**
+ * This is a 3D Fruit Ninja app written in Java, and using JavaFX.  For using with students, there are 11 suggested
+ * code blocks to remove, and challenge the students to write the code to get it to work.  Advanced students
+ * could implement the entire game.
+ *
+ * Game is the main app.
+ * All constants are in the Settings class.
+ * SpriteBase is the parent class for both Ninja and Fruit.
+ *
+ */
+
+
+public class Game extends Application {
+
+    //DONE 1 - instantiate a Random class;  It will be used later.  1 line.
+    Random rnd = new Random();
+    //End
+
+    Pane fruitLayer;
+    Pane scoreLayer;
+
+    Image fruitImage[]=new Image[Settings.FRUIT_IMAGE_FILES.length];
+    Image ninjaImage;
+    Image smallExplosionImage;
+    Image largeExplosionImage;
+    Image bombImage;
+
+    List<Fruit> fruits = new ArrayList<>();
+    List<Ninja> ninjas = new ArrayList<>();
+
+    Text scoreText = new Text();
+    boolean collision = false;
+    long startTime;
+
+    //DONE 2 - Initialize score and lives variables.  2 lines.
+    int score=0;
+    int lives=Settings.LIVES;
+
+    //End
+    
+    Scene scene;
+
+    @Override
+    public void start(Stage primaryStage) {
+
+        Group root = new Group();
+
+        // create layers
+        fruitLayer = new Pane();
+        scoreLayer = new Pane();
+
+		Image dojoImage = new Image( getClass().getResource(Settings.DOJO_IMAGE_FILE).toExternalForm());
+		ImageView imageView = new ImageView(dojoImage);
+		root.getChildren().add( imageView);
+		
+		root.getChildren().add( fruitLayer);
+        root.getChildren().add( scoreLayer);
+        
+        scene = new Scene( root, Settings.SCENE_WIDTH, Settings.SCENE_HEIGHT);
+        
+        primaryStage.setScene( scene);
+        primaryStage.show();
+
+        loadGame();
+        createScoreLayer();
+
+        //DONE 3 - Define a createNinja() class below and call it here (no parameters or return values); 1 line
+        createNinja();
+        //end
+
+        //DONE 5 - Define a spawnFruit() class below and call it here (no parameters or return values); 1 line
+        spawnFruit();
+        //end
+ 
+        
+        AnimationTimer gameLoop = new AnimationTimer() {
+
+            @Override
+            public void handle(long now) {
+
+                // DONE - also call spawnFruit() here
+                spawnFruit();
+                //end
+
+                // movement
+                fruits.forEach(sprite -> sprite.move());
+                ninjas.forEach(sprite -> sprite.move());
+                
+                checkChop(now);
+                
+                // update sprites in scene
+                fruits.forEach(sprite -> sprite.updateUI());
+                ninjas.forEach(sprite -> sprite.updateUI());
+
+                // check if sprite can be removed
+                fruits.forEach(sprite -> sprite.checkRemovability());
+                
+                // remove fruit that is finished
+                removeFruit(fruits);
+
+                // update score, health, etc
+                updateScore();
+            }
+
+        };
+        gameLoop.start();
+
+    }
+
+    private void loadGame() {
+        for (int i=0; i < Settings.FRUIT_IMAGE_FILES.length; i++) {
+            fruitImage[i] = new Image( getClass().getResource(Settings.FRUIT_IMAGE_FILES[i]).toExternalForm());
+        }
+
+        bombImage = fruitImage[0];
+        smallExplosionImage = new Image( getClass().getResource(Settings.SMALL_EXPLOSION_IMAGE_FILE).toExternalForm());
+        largeExplosionImage = new Image( getClass().getResource(Settings.LARGE_EXPLOSION_IMAGE_FILE).toExternalForm());
+        ninjaImage = new Image( getClass().getResource(Settings.NINJA_IMAGE_FILE).toExternalForm());
+        
+    }
+
+ 
+    
+    private void createScoreLayer() {
+
+
+        scoreText.setFont( Font.font( null, FontWeight.NORMAL, 20));
+        scoreText.setStroke(Color.WHITE);
+        scoreText.setFill(Color.WHITE);
+
+        scoreLayer.getChildren().add( scoreText);
+        scoreText.relocate(1, 90);
+        scoreText.setText("");
+
+        scoreText.setBoundsType(TextBoundsType.VISUAL);
+
+
+    }
+
+    //DONE 4 - Implement createNinja()
+
+    //Make a new Ninja class and add it to the ninjas list
+    //x should be a random value within the screen width
+    //y should be a constant Settings.NINJA_Y
+    //r,dx,dy,and dr call all be set to zero.
+    //5 lines of code, no counting comments or spaces
+    private void createNinja() {
+        Image image = ninjaImage;
+        double y = Settings.NINJA_Y;
+        double x = rnd.nextDouble()*(Settings.SCENE_WIDTH-image.getWidth());
+        Ninja ninja = new Ninja(fruitLayer,image,x,y,0,0,0,0);
+        ninjas.add(ninja);
+    }
+
+
+    //DONE 6 -Implement spawnFruit
+    //return if there is already enough fruit or if lives are <0=
+    // set a random value for image, x, y, dy, dx, rotate, distance, dw
+    // call the fruit constructor and add the instance to fruits
+    // 13 lines of code
+    private void spawnFruit() {
+        if (fruits.size()>= Settings.NUM_FRUIT || lives<=0) {
+            return;
+        }
+        Image image = fruitImage[rnd.nextInt(fruitImage.length)];
+        //Random x and y same as ninja
+        double y = Settings.NINJA_Y;
+        double x = rnd.nextDouble()*(Settings.SCENE_WIDTH-image.getWidth());
+        //Random speed
+        double dy = rnd.nextDouble()*(Settings.MAX_Y_SPEED-Settings.MIN_Y_SPEED+1)+Settings.MIN_Y_SPEED;
+        double dx = rnd.nextDouble()*(Settings.MAX_X_SPEED-Settings.MIN_X_SPEED+1)+Settings.MIN_X_SPEED;
+        double rotate = rnd.nextDouble()*(Settings.MAX_ROTATE-Settings.MIN_ROTATE+1)+Settings.MIN_ROTATE;
+        double distance = rnd.nextDouble()*(Settings.MAX_FRUIT_Y-Settings.MIN_FRUIT_Y+1)+Settings.MIN_FRUIT_Y;
+        double dw = distance/Settings.SIZE_DIV;
+        Fruit fruit = new Fruit(fruitLayer,image,x,y,0,dx,dy,rotate,dy,distance,Settings.START_FRUIT_WIDTH,dw);
+        fruits.add(fruit);
+        ninjas.get(0).x = x+Settings.NINJA_TO_FRUIT_OFFSET;
+    }
+
+    //end
+
+    private void removeFruit (List <Fruit> fruitList) {
+            Iterator <Fruit> iter = fruitList.iterator();
+            while (iter.hasNext()) {
+                Fruit fruit = iter.next();
+                if (fruit.isRemovable() || lives <= 0) {
+                    fruit.removeFromLayer();
+                    iter.remove();
+                }
+            }
+    }
+
+
+    private void checkChop(long now) {
+    	    
+    	Point pointerLocation = MouseInfo.getPointerInfo().getLocation();
+
+        int sceneX = pointerLocation.x;
+        sceneX -= fruitLayer.getScene().getWindow().getX();
+        sceneX -= fruitLayer.getScene().getX();
+
+        int sceneY = pointerLocation.y;
+        sceneY -= fruitLayer.getScene().getWindow().getY();
+        sceneY -= fruitLayer.getScene().getY();
+
+        for( Fruit fruit: fruits) {
+        	if (fruit.image == largeExplosionImage) {
+        		long duration = (long) ((now / 1000000000.0) - startTime);
+        		if (duration >= Settings.EXPLODE_SECONDS) {
+        			fruit.setRemovable(true);
+        			lives--;
+        		}
+        	
+        	}        	
+        	
+        	else if (fruit.checkChopped(sceneX, sceneY)) {
+            	if (fruit.image == fruitImage[0]) {
+
+                	fruit.image = largeExplosionImage;
+                    fruit.bombHit(largeExplosionImage,Settings.EXPLODE_X,Settings.EXPLODE_Y,Settings.EXPLODE_DR,Settings.EXPLODE_W);
+                	startTime = (long) (now / 1000000000.0);
+            	}
+            	
+            	else {
+            		fruit.image = smallExplosionImage;
+            		fruit.dr = fruit.dr*3;
+            		score++;
+            	}
+            	fruit.imageView.setImage(fruit.image); 
+            }
+        }
+    }
+    
+    private void updateScore() {
+    	if (lives > 0) {
+            scoreText.setText("Score: " + score + "\nLives: " + lives);
+    	}
+    	else {
+    		scoreText.setText("Score: " + score + "\nLives: " + lives + "                   Game Over!");
+    	}
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+}
